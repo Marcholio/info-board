@@ -3,29 +3,47 @@ import Clock from 'react-live-clock';
 import { getHongKongWeather, getEspooWeather } from '../../api';
 import './styles.css';
 
+const createWeatherInfo = (data, name, timezone) => (
+  <div className="country">
+    <h1>{name}</h1>
+    <Clock format="HH:mm:ss" ticking timezone={timezone} />
+    <p className="temp">{data.temp} &#x2103;</p>
+    <div className="row">
+      <p className="humidity">{data.humidity} %</p>
+      <p className="wind">{data.wind.speed} m/s</p>
+    </div>
+  </div>
+);
+
 class WeatherView extends Component {
   constructor(props) {
     super(props);
-    this.state = { hk: {} };
+    this.state = { hongkong: { wind: {} }, espoo: { wind: {} } };
   }
 
   componentWillMount() {
-    console.log('moro');
-    getHongKongWeather().then(res => {
-      this.setState({ hk: { temp: res.main.temp } });
-    });
+    setInterval(
+      () =>
+        Promise.all([getEspooWeather(), getHongKongWeather()]).then(res => {
+          const data = res.map(r => ({
+            temp: r.main.temp.toFixed(1),
+            humidity: r.main.humidity,
+            wind: r.wind,
+          }));
+          this.setState({
+            espoo: data[0],
+            hongkong: data[1],
+          });
+        }),
+      1000,
+    );
   }
 
   render() {
     return (
       <div className="weather">
-        <div id="hongkong">
-          <Clock format="HH:mm:ss" ticking timezone="Asia/Hong_Kong" />
-          <p>{this.state.hk.temp}</p>
-        </div>
-        <div id="home">
-          <Clock format="HH:mm:ss" ticking />
-        </div>
+        {createWeatherInfo(this.state.espoo, 'Espoo', 'Europe/Helsinki')}
+        {createWeatherInfo(this.state.hongkong, 'Hong Kong', 'Asia/Hong_Kong')}
       </div>
     );
   }

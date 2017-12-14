@@ -5,8 +5,16 @@ import './App.css';
 
 const App = () => (
   <div className="App">
-    <Carousel autoplay wrapAround decorators={[]}>
+    <Carousel
+      autoplay
+      wrapAround
+      decorators={[]}
+      dragging={false}
+      autoplayInterval={10000}
+      speed={2000}
+    >
       <WeatherView />
+      <p>Moro</p>
     </Carousel>
   </div>
 );

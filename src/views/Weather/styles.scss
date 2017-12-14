@@ -1,19 +1,26 @@
 .weather {
   display: flex;
   flex-direction: row;
-  width: 100%; }
-  .weather .country {
+  width: 100%;
+
+  .country {
     width: 50%;
     height: 100%;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    font-size: 48px; }
-    .weather .country .row {
+    font-size: 48px;
+
+    .row {
       display: flex;
       flex-direction: row;
-      justify-content: space-around; }
-    .weather .country .col {
+      justify-content: space-around;
+    }
+
+    .col {
       display: flex;
-      flex-direction: column; }
+      flex-direction: column;
+    }
+  }
+}
