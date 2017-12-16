@@ -4,13 +4,13 @@
   width: 100%;
 
   .country {
-    width: 50%;
-    height: 100%;
-    text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     font-size: 48px;
+    height: 100%;
+    justify-content: center;
+    text-align: center;
+    width: 50%;
 
     .row {
       display: flex;
@@ -21,6 +21,10 @@
     .col {
       display: flex;
       flex-direction: column;
+    }
+
+    p {
+      margin: 0;
     }
   }
 }

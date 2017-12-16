@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
 import Clock from 'react-live-clock';
+import Icon from 'react-weathericons';
 import { getHongKongWeather, getEspooWeather } from '../../api';
+import getIcon from './iconMapping';
 import './styles.css';
 
 const createWeatherInfo = (data, name, timezone) => (
   <div className="country">
     <h1>{name}</h1>
     <Clock format="HH:mm:ss" ticking timezone={timezone} />
+    <i className={`wi ${getIcon(data.weather)}`} />
     <p className="temp">{data.temp} &#x2103;</p>
     <div className="row">
-      <p className="humidity">{data.humidity} %</p>
-      <p className="wind">{data.wind.speed} m/s</p>
+      <div className="row">
+        <Icon name="humidity" />
+        <p>{data.humidity}%</p>
+      </div>
+      <div className="row">
+        <i className={`wi wi-wind from-${data.wind.deg}-deg`} />
+        <p>{data.wind.speed} m/s</p>
+      </div>
     </div>
   </div>
 );
@@ -18,7 +27,7 @@ const createWeatherInfo = (data, name, timezone) => (
 class WeatherView extends Component {
   constructor(props) {
     super(props);
-    this.state = { hongkong: { wind: {} }, espoo: { wind: {} } };
+    this.state = {};
   }
 
   componentWillMount() {
@@ -29,6 +38,7 @@ class WeatherView extends Component {
             temp: r.main.temp.toFixed(1),
             humidity: r.main.humidity,
             wind: r.wind,
+            weather: r.weather,
           }));
           this.setState({
             espoo: data[0],
@@ -42,8 +52,16 @@ class WeatherView extends Component {
   render() {
     return (
       <div className="weather">
-        {createWeatherInfo(this.state.espoo, 'Espoo', 'Europe/Helsinki')}
-        {createWeatherInfo(this.state.hongkong, 'Hong Kong', 'Asia/Hong_Kong')}
+        {this.state.espoo
+          ? createWeatherInfo(this.state.espoo, 'Espoo', 'Europe/Helsinki')
+          : null}
+        {this.state.hongkong
+          ? createWeatherInfo(
+              this.state.hongkong,
+              'Hong Kong',
+              'Asia/Hong_Kong',
+            )
+          : null}
       </div>
     );
   }

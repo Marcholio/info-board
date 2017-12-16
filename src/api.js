@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { Map } from 'immutable';
 
+require('dotenv').config({ path: `${__dirname}/../.env` });
+
 const weatherUrl = 'https://api.openweathermap.org/data/2.5/weather';
-const weatherKey = '20d2278facbb1b28a84365623f5181bf';
+const weatherKey = process.env.REACT_APP_WEATHER_KEY;
 
 let cache = Map({});
 
