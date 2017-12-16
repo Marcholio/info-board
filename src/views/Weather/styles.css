@@ -1,8 +1,11 @@
 .weather {
   display: flex;
   flex-direction: row;
+  height: 100%;
   width: 100%; }
   .weather .country {
+    background-size: 100% 100%;
+    color: #fff;
     display: flex;
     flex-direction: column;
     font-size: 48px;
@@ -10,6 +13,10 @@
     justify-content: center;
     text-align: center;
     width: 50%; }
+    .weather .country:nth-child(1) {
+      background: url("../../images/espoo.jpg"); }
+    .weather .country:nth-child(2) {
+      background: url("../../images/hongkong.jpg"); }
     .weather .country .row {
       display: flex;
       flex-direction: row;

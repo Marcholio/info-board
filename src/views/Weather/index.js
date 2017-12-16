@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import Clock from 'react-live-clock';
 import Icon from 'react-weathericons';
-import { getHongKongWeather, getEspooWeather } from '../../api';
+import { Map } from 'immutable';
+import {
+  getHongKongWeather,
+  getEspooWeather,
+  getEspooForecast,
+  getHongKongForecast,
+} from '../../api';
 import getIcon from './iconMapping';
 import './styles.css';
 
@@ -9,7 +15,12 @@ const createWeatherInfo = (data, name, timezone) => (
   <div className="country">
     <h1>{name}</h1>
     <Clock format="HH:mm:ss" ticking timezone={timezone} />
-    <i className={`wi ${getIcon(data.weather)}`} />
+    <i
+      className={`wi ${getIcon(
+        data.weather[0].id.toString(),
+        data.weather[0].icon.indexOf('d') >= 0,
+      )}`}
+    />
     <p className="temp">{data.temp} &#x2103;</p>
     <div className="row">
       <div className="row">
@@ -20,6 +31,18 @@ const createWeatherInfo = (data, name, timezone) => (
         <i className={`wi wi-wind from-${data.wind.deg}-deg`} />
         <p>{data.wind.speed} m/s</p>
       </div>
+    </div>
+    <div className="row">
+      {data.forecasts.keySeq().map(date => (
+        <div key={`${name}${date}`} className="col">
+          <p>{date}</p>
+          <i className={`wi ${data.forecasts.getIn([date, 'icon'])}`} />
+          <p>
+            {data.forecasts.getIn([date, 'max'])}&#x2103; /{' '}
+            {data.forecasts.getIn([date, 'min'])}&#x2103;
+          </p>
+        </div>
+      ))}
     </div>
   </div>
 );
@@ -33,16 +56,58 @@ class WeatherView extends Component {
   componentWillMount() {
     setInterval(
       () =>
-        Promise.all([getEspooWeather(), getHongKongWeather()]).then(res => {
-          const data = res.map(r => ({
+        Promise.all([
+          getEspooWeather(),
+          getHongKongWeather(),
+          getEspooForecast(),
+          getHongKongForecast(),
+        ]).then(res => {
+          const forecasts = res.slice(2, 4).map(r => {
+            let forecastMap = Map({});
+            r.list.forEach(entry => {
+              const date = `${entry.dt_txt
+                .split(' ')[0]
+                .split('-')
+                .slice(1)
+                .reverse()
+                .join('.')}.`;
+              if (
+                !forecastMap.getIn([date, 'min']) ||
+                entry.main.temp_min < forecastMap.getIn([date, 'min'])
+              ) {
+                forecastMap = forecastMap.setIn(
+                  [date, 'min'],
+                  Math.round(entry.main.temp_min),
+                );
+              }
+              if (
+                !forecastMap.getIn([date, 'max']) ||
+                entry.main.temp_max > forecastMap.getIn([date, 'max'])
+              ) {
+                forecastMap = forecastMap.setIn(
+                  [date, 'max'],
+                  Math.round(entry.main.temp_max),
+                );
+              }
+              if (!forecastMap.getIn([date, 'icon'])) {
+                forecastMap = forecastMap.setIn(
+                  [date, 'icon'],
+                  getIcon(entry.weather[0].id.toString(), true),
+                );
+              }
+            });
+            return forecastMap;
+          });
+
+          const data = res.slice(0, 2).map(r => ({
             temp: r.main.temp.toFixed(1),
             humidity: r.main.humidity,
             wind: r.wind,
             weather: r.weather,
           }));
           this.setState({
-            espoo: data[0],
-            hongkong: data[1],
+            espoo: Object.assign({}, data[0], { forecasts: forecasts[0] }),
+            hongkong: Object.assign({}, data[1], { forecasts: forecasts[1] }),
           });
         }),
       1000,

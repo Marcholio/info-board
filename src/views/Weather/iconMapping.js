@@ -247,13 +247,5 @@ const iconMap = fromJS({
   },
 });
 
-export default weather => {
-  let day = true;
-  if (weather[0].icon.indexOf('n') >= 0) {
-    day = false;
-  }
-
-  return (
-    iconMap.getIn([weather[0].id.toString(), day ? 'day' : 'night']) || 'wi-na'
-  );
-};
+export default (id, day) =>
+  iconMap.getIn([id, day ? 'day' : 'night']) || 'wi-na';

@@ -1,9 +1,14 @@
+$textcolor: #fff;
+
 .weather {
   display: flex;
   flex-direction: row;
+  height: 100%;
   width: 100%;
 
   .country {
+    background-size: 100% 100%;
+    color: $textcolor;
     display: flex;
     flex-direction: column;
     font-size: 48px;
@@ -11,6 +16,14 @@
     justify-content: center;
     text-align: center;
     width: 50%;
+
+    &:nth-child(1) {
+      background: url('../../images/espoo.jpg');
+    }
+
+    &:nth-child(2) {
+      background: url('../../images/hongkong.jpg');
+    }
 
     .row {
       display: flex;
