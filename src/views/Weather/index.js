@@ -19,23 +19,23 @@ const createWeatherInfo = (data, name, timezone) => (
       className={`wi ${getIcon(
         data.weather[0].id.toString(),
         data.weather[0].icon.indexOf('d') >= 0,
-      )}`}
+      )} mainweather`}
     />
-    <p className="temp">{data.temp} &#x2103;</p>
+    <p className="temp">{data.temp}&#x2103;</p>
     <div className="row">
-      <div className="row">
+      <div className="row humidity">
         <Icon name="humidity" />
         <p>{data.humidity}%</p>
       </div>
-      <div className="row">
+      <div className="row wind">
         <i className={`wi wi-wind from-${data.wind.deg}-deg`} />
         <p>{data.wind.speed} m/s</p>
       </div>
     </div>
-    <div className="row">
+    <div className="row forecasts">
       {data.forecasts.keySeq().map(date => (
         <div key={`${name}${date}`} className="col">
-          <p>{date}</p>
+          <h4>{date}</h4>
           <i className={`wi ${data.forecasts.getIn([date, 'icon'])}`} />
           <p>
             {data.forecasts.getIn([date, 'max'])}&#x2103; /{' '}

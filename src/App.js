@@ -14,11 +14,10 @@ const App = () => (
       wrapAround
       decorators={[]}
       dragging={false}
-      autoplayInterval={10000}
+      autoplayInterval={1000000000}
       speed={2000}
     >
       <WeatherView />
-      <p>Moro</p>
     </Carousel>
   </div>
 );

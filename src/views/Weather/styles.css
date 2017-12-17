@@ -4,19 +4,20 @@
   height: 100%;
   width: 100%; }
   .weather .country {
-    background-size: 100% 100%;
     color: #fff;
     display: flex;
     flex-direction: column;
     font-size: 48px;
     height: 100%;
-    justify-content: center;
+    justify-content: flex-start;
     text-align: center;
     width: 50%; }
     .weather .country:nth-child(1) {
-      background: url("../../images/espoo.jpg"); }
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../images/espoo.jpg");
+      background-size: 100% 100%; }
     .weather .country:nth-child(2) {
-      background: url("../../images/hongkong.jpg"); }
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../images/hongkong.jpg");
+      background-size: 100% 100%; }
     .weather .country .row {
       display: flex;
       flex-direction: row;
@@ -24,5 +25,32 @@
     .weather .country .col {
       display: flex;
       flex-direction: column; }
+    .weather .country h1 {
+      font-weight: 100;
+      margin: 64px 0 24px; }
+    .weather .country time {
+      font-size: 80px; }
+    .weather .country .mainweather {
+      align-self: center;
+      margin: 120px 0 48px;
+      transform: scale(2, 2);
+      width: 50px; }
+    .weather .country .temp {
+      font-size: 64px; }
+    .weather .country .humidity,
+    .weather .country .wind {
+      margin-top: 48px; }
+      .weather .country .humidity p,
+      .weather .country .wind p {
+        margin-left: 24px; }
     .weather .country p {
       margin: 0; }
+    .weather .country .forecasts {
+      margin-top: 64px; }
+      .weather .country .forecasts h4 {
+        font-size: 32px;
+        font-weight: 400;
+        margin: 24px 0; }
+      .weather .country .forecasts p {
+        font-size: 20px;
+        margin: 24px 0; }
