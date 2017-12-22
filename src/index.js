@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-// jepjep
+
 /* eslint-disable no-undef */
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
